@@ -8,3 +8,8 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE # H2 em memória, nome 'testdb'
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 123

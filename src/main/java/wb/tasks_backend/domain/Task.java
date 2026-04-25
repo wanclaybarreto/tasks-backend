@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "task")
+@Table(name = "tasks")
 public class Task {
 
     @Id
@@ -26,6 +26,13 @@ public class Task {
         this.description = description;
         this.whenToDo = whenToDo;
         this.done = done;
+    }
+
+    public Task(String description, LocalDate whenToDo, Boolean done, User user) {
+        this.description = description;
+        this.whenToDo = whenToDo;
+        this.done = done;
+        this.user = user;
     }
 
     public Integer getId() {
