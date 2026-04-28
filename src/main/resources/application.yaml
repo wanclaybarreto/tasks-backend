@@ -13,3 +13,7 @@ spring:
     driverClassName: org.h2.Driver
     username: sa
     password: 123
+  data:
+    rest:
+      base-path: /api
+      defaultMediaType: application/json
