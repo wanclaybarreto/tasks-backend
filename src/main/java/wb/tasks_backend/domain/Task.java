@@ -1,6 +1,11 @@
 package wb.tasks_backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 
@@ -12,12 +17,19 @@ public class Task {
     @GeneratedValue
     private Integer id;
 
+    @NotEmpty(message = "A descrição da tarefa é obrigatória")
+    @Length(min = 3, max = 50, message = "A descrição da tarefa precisa ter de 3 a 50 caracteres")
     private String description;
+
+    @NotNull(message = "A data da tarefa é obrigatória")
+    @FutureOrPresent(message = "Data inválida")
     private LocalDate whenToDo;
+
     private Boolean done = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull(message = "O usuário da tarefa é obrigatório")
     private User user;
 
     public Task() {}

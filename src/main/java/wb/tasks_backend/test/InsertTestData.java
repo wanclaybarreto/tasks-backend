@@ -5,9 +5,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import wb.tasks_backend.domain.Task;
-import wb.tasks_backend.domain.TaskRepository;
+import wb.tasks_backend.repository.TaskRepository;
 import wb.tasks_backend.domain.User;
-import wb.tasks_backend.domain.UserRepository;
+import wb.tasks_backend.repository.UserRepository;
 
 import java.time.LocalDate;
 

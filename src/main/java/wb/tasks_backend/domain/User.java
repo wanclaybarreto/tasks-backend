@@ -1,6 +1,8 @@
 package wb.tasks_backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
@@ -10,8 +12,15 @@ public class User {
     @GeneratedValue
     private Integer id;
 
+    @NotEmpty(message = "O nome é obrigatório")
     private String name;
+
+    @NotEmpty(message = "O nome de usuário é obrigatório")
+    @JsonIgnore
     private String username;
+
+    @NotEmpty(message = "A senha é obrigatória")
+    @JsonIgnore
     private String password;
 
     public User() {}
