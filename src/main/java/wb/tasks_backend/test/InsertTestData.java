@@ -3,6 +3,8 @@ package wb.tasks_backend.test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import wb.tasks_backend.domain.Task;
 import wb.tasks_backend.repository.TaskRepository;
@@ -26,8 +28,9 @@ public class InsertTestData {
     @EventListener
     public void loadDatabase(ContextRefreshedEvent event) {
 
-        //TODO: Criptografar senha.
-        User user = new User("Fulano de Tal", "fulano", "abc123");
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        User user = new User("Fulano de Tal", "fulano", encoder.encode("fulano123"));
         userRepository.save(user);
 
         LocalDate baseDate = LocalDate.parse("2026-11-01");
