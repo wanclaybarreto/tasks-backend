@@ -17,3 +17,6 @@ spring:
     rest:
       base-path: /api
       defaultMediaType: application/json
+logging:
+  level:
+    root: INFO
