@@ -3,6 +3,7 @@ package wb.tasks_backend.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +15,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import wb.tasks_backend.domain.User;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -47,11 +50,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authResult.getPrincipal();
 
+        byte[] keyBytes = SecurityConstants.JWT_SECRET_KEY.getBytes(StandardCharsets.UTF_8);
+        SecretKey key = Keys.hmacShaKeyFor(keyBytes);
+
         String jwtToken = Jwts.builder()
                 .subject(userDetails.getUsername())
                 .expiration(new Date(System.currentTimeMillis() + SecurityConstants.JWT_EXPIRATION_TIME))
                 .claim("name", userDetails.getName())
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.JWT_SECRET_KEY)
+                .signWith(key, Jwts.SIG.HS512)
                 .compact();
 
         response.addHeader(
