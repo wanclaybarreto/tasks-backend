@@ -2,7 +2,6 @@ package wb.tasks_backend.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,6 +18,7 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -33,8 +33,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throws AuthenticationException {
 
         try {
+            // TODO: Fazer tratamento para verificar se o json enviado contem as informações corretas e criar exception
             ObjectMapper mapper = new ObjectMapper();
-            User user = mapper.readValue(request.getInputStream(), User.class);
+            LinkedHashMap<String, String> dataUser = mapper.readValue(request.getInputStream(), LinkedHashMap.class);
+
+            User user = new User();
+            user.setUsername(dataUser.get("username"));
+            user.setPassword(dataUser.get("password"));
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
             return authenticationManager.authenticate(authentication);
